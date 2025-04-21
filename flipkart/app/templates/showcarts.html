@@ -1,0 +1,115 @@
+{% extends 'base.html' %} {% block title %}FlipKart | Cart{% endblock %} {% block body %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Cart items column -->
+    <div class="col-md-9">
+      <div class="row">
+        {% for m in messages %}
+        <h3 class="text-center"><mark>{{ m }}</mark></h3>
+        {% endfor %} {% for x in allcarts %}
+        <div class="col-md-4 mt-3">
+          <img
+            src="{{ x.productid.images.url }}"
+            alt="{{ x.productid.productname }}"
+            width="300"
+            height="400"
+          />
+        </div>
+
+        <div class="col-md-6 mt-3">
+          <div class="card-header fw-bold">Product Details</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ x.productid.productname }}</h5>
+            <p class="card-text text-success fw-bold">Special Price</p>
+            <p class="card-text">
+              <strong>₹{{ x.productid.price }}</strong>
+              &nbsp;
+              <del>₹{{ x.productid.price|add:x.productid.price }}</del>
+              <span class="text-success">50% off</span>
+            </p>
+
+            <p class="card-text">{{ x.productid.description }}</p>
+
+            <ul>
+              <li>10% Off on Full Swipe Cards – Up to ₹1500</li>
+              <li>5% Cashback on Flipkart Axis Bank Credit Card</li>
+              <li>10% Off on HDFC EMI - Min ₹5000</li>
+              <li>No Cost EMI from ₹3,333/month</li>
+            </ul>
+
+            <p>Deliver by <strong>{{ date }}</strong> | <span>Free</span></p>
+            <p>10 Days Return Policy</p>
+            <h4>Available Qty: {{ x.productid.quantity_available }}</h4>
+
+            <!-- Quantity control -->
+            <p>
+              <strong>QTY:</strong>
+              <a href="{% url 'updateqty' 0 x.productid.productid %}">
+                <button class="btn btn-danger">-</button>
+              </a>
+              <input
+                type="number"
+                value="{{ x.qty }}"
+                style="width: 50px"
+                disabled
+              />
+              {% if x.qty < x.productid.quantity_available %}
+              <a href="{% url 'updateqty' 1 x.productid.productid %}">
+                <button class="btn btn-success">+</button>
+              </a>
+              {% else %}
+              <button class="btn btn-secondary" disabled>Max</button>
+              <small class="text-danger">No more stock</small>
+              {% endif %}
+            </p>
+
+            <!-- Checkout Button (disabled if profile/address not present) -->
+
+            <!-- Checkout Button (disabled if profile/address not present) -->
+            {% if has_profile and has_address %}
+            <a
+              class="btn btn-warning "
+              href="/checkout_single/{{ x.productid.productid }}"
+              >Checkout</a
+            >
+
+            {% else %}
+            <button class="btn btn-secondary" disabled>
+              Checkout Unavailable
+            </button>
+            {% endif %}
+            <a
+              class="btn btn-primary"
+              href="/removecart/{{ x.productid.productid }}"
+              >Remove</a
+            >
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Total Summary -->
+    <div class="col-md-3">
+      <h3 class="btn-danger">Total Summary</h3>
+      <h5>Total Items: {{ totalitems }}</h5>
+      <hr />
+      <h5>Total Amount: ₹{{ totalamount }}</h5>
+
+      {% if not has_profile %}
+      <div class="alert alert-warning">
+        Please <a href="/addprofile">complete your profile</a> before checkout.
+      </div>
+      {% endif %} {% if not has_address %}
+      <div class="alert alert-warning">
+        Please <a href="/addaddress">add an address</a> before checkout.
+      </div>
+      {% endif %} {% if has_profile and has_address %}
+      <a class="btn btn-success" href="/checkout">Proceed to Checkout</a>
+      {% else %}
+      <button class="btn btn-secondary" disabled>Checkout Unavailable</button>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

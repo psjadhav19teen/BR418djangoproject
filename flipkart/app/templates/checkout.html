@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4">Checkout</h2>
+
+    <h4 class="mb-3">Your Address</h4>
+    {% for addr in address %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <p><strong>Address:</strong> {{ addr.address }}</p>
+                <p><strong>City:</strong> {{ addr.city.name }}</p>
+                <p><strong>Country:</strong> {{ addr.country.name }}</p>
+                <p><strong>Pincode:</strong> {{ addr.pincode }}</p>
+            </div>
+        </div>
+    {% endfor %}
+
+    <h4 class="mt-4 mb-3">Cart Summary</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_data %}
+            <tr>
+                <td>{{ item.productname }}</td>
+                <td>{{ item.qty }}</td>
+                <td>₹{{ item.price }}</td>
+                <td>₹{{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h5 class="text-right mt-3">Total: ₹{{ total }}</h5>
+
+    <div class="text-center mt-4">
+        <a href="#" class="btn btn-success">Place Order</a>
+        <a href="/showcarts" class="btn btn-danger">Cancel</a>
+    </div>
+</div>
+{% endblock %}

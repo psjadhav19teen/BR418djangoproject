@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Your Wishlist{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2>Your Wishlist</h2>
+    <hr>
+    {% for m in messages %}
+    <h3 class="text-center"><mark>{{ m }}</mark></h3>
+    {% endfor %}
+    {% if wishlist_items %}
+        <div class="row">
+            {% for item in wishlist_items %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <!-- Card Header with Image -->
+                    <img src="{{ item.productid.images.url }}" class="card-img-top" alt="{{ item.productid.productname }}" style="height: 300px; object-fit: cover;">
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.productid.productname }}</h5>
+                        <p class="card-text">
+                            <strong>Price:</strong> ₹{{ item.productid.price }}<br>
+                            <strong>Description:</strong> {{ item.productid.description }}<br>
+                            <strong>Available Stock:</strong> {{ item.productid.quantity_available }}<br>
+                        </p>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'remove_from_wishlist' item.productid.productid %}" class="btn btn-danger">Remove</a>
+                            <a href="/addtocart/{{ item.productid.productid }}" class="btn btn-success">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <p>Your wishlist is empty. Start adding products!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

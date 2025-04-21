@@ -1,0 +1,52 @@
+{% extends 'base.html' %} {% block title %}FlipKart|Products{% endblock %} {% block body %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 mt-3 text-center">
+      <img
+        src="{{product.images.url}}"
+        alt="{{product.productname}}"
+        width="300px"
+        height="400px"
+      />
+    </div>
+
+    <div class="col-md-6 mt-3">
+      <div class="card-header fw-bold">Product Details</div>
+      <div class="card-body">
+        <h5 class="card-title">{{product.productname}}</h5>
+        <p class="card-text text-success fw-bold">Special Price</p>
+        <p class="card-text">
+          <strong>{{product.price}}/-</strong>
+          &nbsp;
+          <del>{{product.price|add:product.price}}/-</del>
+          <span class="text-success">50% off</span>
+        </p>
+
+        <p class="card-text">{{product.description}}</p>
+        <h3 class="card-text fw-bold">
+          Available Qty: {{product.quantity_available}}
+        </h3>
+        <p class="card-text fw-bold">Available Offers</p>
+        <ul>
+          <li>
+            Bank Offer10% Off on All Credit/Debit Full Swipe Transactions, Up to
+            ₹1,500 on Orders of ₹2,999 and aboveT&C
+          </li>
+          <li>
+            Bank Offer5% Unlimited Cashback on Flipkart Axis Bank Credit CardT&C
+          </li>
+          <li>
+            Bank Offer10% off up to ₹1,200 on HDFC Bank Credit Card EMI on 6 and
+            9 months tenure. Min Txn Value: ₹5000T&C
+          </li>
+          <li>No cost EMI ₹3,333/month. Standard EMI also available</li>
+        </ul>
+        <a href="/addtocart/{{product.productid}}" class="btn btn-primary"
+          >Add to Cart</a
+        >
+        <a href="/" class="btn btn-danger">Back</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
